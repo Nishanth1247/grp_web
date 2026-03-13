@@ -6,8 +6,6 @@ const userId = req.user.id
 
 let data = {}
 
-
-
 db.query(
 `SELECT 
 ROUND(
@@ -41,4 +39,11 @@ res.json(data)
 
 })
 
+}
+
+
+exports.getMemberProjects = (req,res)=>{
+    res.json({
+        message: "Projects API working"
+    })
 }
