@@ -6,6 +6,7 @@ import { FiFolder } from "react-icons/fi"
 export default function MyProjects(){
 
 const [projects,setProjects] = useState([])
+const [loading,setLoading] = useState(true)
 
 useEffect(()=>{
 loadProjects()
@@ -17,11 +18,23 @@ try{
 
 const res = await API.get("/member/projects")
 
+// ensure response is array
+if(Array.isArray(res.data)){
 setProjects(res.data)
+}else if(res.data.projects){
+setProjects(res.data.projects)
+}else{
+setProjects([])
+}
 
 }catch(err){
 
 console.log("Project load error:",err)
+setProjects([])
+
+}finally{
+
+setLoading(false)
 
 }
 
@@ -47,22 +60,35 @@ return(
 My Projects
 </h1>
 
+{/* Loading */}
+
+{loading && (
+<div className="text-gray-500 text-center">
+Loading projects...
+</div>
+)}
+
+{/* Projects */}
+
+{!loading && (
+
 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
 {projects.length === 0 ? (
 
-<p className="text-gray-500">
+<div className="col-span-3 text-center text-gray-400">
 No projects assigned yet
-</p>
+</div>
 
 ) : (
 
 projects.map((p)=>(
-
 <div
 key={p.id}
 className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition duration-300"
 >
+
+{/* Header */}
 
 <div className="flex items-center gap-3 mb-4">
 
@@ -76,9 +102,13 @@ className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition duratio
 
 </div>
 
+{/* Description */}
+
 <p className="text-gray-500 leading-relaxed mb-4">
 {p.description}
 </p>
+
+{/* Status */}
 
 <span
 className={`px-4 py-1 rounded-full text-sm font-semibold ${statusStyle(p.status)}`}
@@ -87,12 +117,13 @@ className={`px-4 py-1 rounded-full text-sm font-semibold ${statusStyle(p.status)
 </span>
 
 </div>
-
 ))
 
 )}
 
 </div>
+
+)}
 
 </div>
 
