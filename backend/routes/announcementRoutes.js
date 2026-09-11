@@ -2,13 +2,12 @@ const router = require("express").Router();
 
 const controller = require("../controllers/announcementController");
 
-const { verifyToken } = require("../middleware/authMiddleware");
-const { isAdmin } = require("../middleware/roleMiddleware");
+const { verifyToken, authorize } = require("../middleware/authMiddleware");
 
-router.get("/", verifyToken, controller.getAnnouncements);
+router.get("/", verifyToken, authorize("CAP", "V_CAP", "MANAGER", "STRATEGIST", "MEMBER"), controller.getAnnouncements);
 
-router.post("/", verifyToken, isAdmin, controller.createAnnouncement);
+router.post("/", verifyToken, authorize("CAP", "V_CAP"), controller.createAnnouncement);
 
-router.delete("/:id", verifyToken, isAdmin, controller.deleteAnnouncement);
+router.delete("/:id", verifyToken, authorize("CAP", "V_CAP"), controller.deleteAnnouncement);
 
 module.exports = router;

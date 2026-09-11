@@ -2,16 +2,15 @@ const router = require("express").Router();
 
 const queryController = require("../controllers/queryController");
 
-const { verifyToken } = require("../middleware/authMiddleware");
-const { isAdmin } = require("../middleware/roleMiddleware");
+const { verifyToken, authorize } = require("../middleware/authMiddleware");
 
-// member sends query
-router.post("/", verifyToken, queryController.createQuery);
+// member/user sends query
+router.post("/", verifyToken, authorize("CAP", "V_CAP", "MANAGER", "STRATEGIST", "MEMBER"), queryController.createQuery);
 
-// admin gets all queries
-router.get("/", verifyToken, isAdmin, queryController.getQueries);
+// management views all queries
+router.get("/", verifyToken, authorize("CAP", "V_CAP", "MANAGER"), queryController.getQueries);
 
-// admin replies to query
-router.put("/reply", verifyToken, isAdmin, queryController.replyQuery);
+// management replies to query
+router.put("/reply", verifyToken, authorize("CAP", "V_CAP", "MANAGER"), queryController.replyQuery);
 
 module.exports = router;

@@ -1,9 +1,4 @@
-exports.isAdmin = (req,res,next)=>{
+const { authorize, isAdmin } = require("./authMiddleware");
 
-if(req.user.role !== "admin"){
-return res.status(403).json({message:"Admin only"})
-}
-
-next()
-
-}
+exports.authorize = authorize;
+exports.isAdmin = isAdmin;

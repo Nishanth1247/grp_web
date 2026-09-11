@@ -16,6 +16,9 @@ import MyProjects from "./pages/member/MyProjects"
 import MemberDashboard from "./pages/member/MemberDashboard"
 import SendQuery from "./pages/member/SendQuery"
 
+const managementRoles = ["CAP", "V_CAP", "MANAGER", "STRATEGIST", "admin"];
+const memberRoles = ["MEMBER", "member", "CAP", "V_CAP", "MANAGER", "STRATEGIST"];
+
 function App(){
 
 return(
@@ -26,12 +29,12 @@ return(
 
 <Route path="/" element={<Login/>}/>
 
-{/* ADMIN ROUTES */}
+{/* ADMIN / MANAGEMENT ROUTES */}
 
 <Route
 path="/admin/dashboard"
 element={
-<ProtectedRoute roleRequired="admin">
+<ProtectedRoute allowedRoles={managementRoles}>
 <AdminDashboard/>
 </ProtectedRoute>
 }
@@ -40,7 +43,7 @@ element={
 <Route
 path="/admin/projects"
 element={
-<ProtectedRoute roleRequired="admin">
+<ProtectedRoute allowedRoles={managementRoles}>
 <Projects/>
 </ProtectedRoute>
 }
@@ -49,7 +52,7 @@ element={
 <Route
 path="/admin/team"
 element={
-<ProtectedRoute roleRequired="admin">
+<ProtectedRoute allowedRoles={managementRoles}>
 <Team/>
 </ProtectedRoute>
 }
@@ -58,7 +61,7 @@ element={
 <Route
 path="/admin/queries"
 element={
-<ProtectedRoute roleRequired="admin">
+<ProtectedRoute allowedRoles={managementRoles}>
 <Queries/>
 </ProtectedRoute>
 }
@@ -67,7 +70,7 @@ element={
 <Route
 path="/admin/announcements"
 element={
-<ProtectedRoute roleRequired="admin">
+<ProtectedRoute allowedRoles={managementRoles}>
 <AdminAnnouncements/>
 </ProtectedRoute>
 }
@@ -76,7 +79,7 @@ element={
 <Route
 path="/admin/attendance"
 element={
-<ProtectedRoute roleRequired="admin">
+<ProtectedRoute allowedRoles={managementRoles}>
 <AdminAttendance/>
 </ProtectedRoute>
 }
@@ -87,7 +90,7 @@ element={
 <Route
 path="/member/dashboard"
 element={
-<ProtectedRoute roleRequired="member">
+<ProtectedRoute allowedRoles={memberRoles}>
 <MemberDashboard/>
 </ProtectedRoute>
 }
@@ -96,7 +99,7 @@ element={
 <Route
 path="/member/projects"
 element={
-<ProtectedRoute roleRequired="member">
+<ProtectedRoute allowedRoles={memberRoles}>
 <MyProjects/>
 </ProtectedRoute>
 }
@@ -105,7 +108,7 @@ element={
 <Route
 path="/member/attendance"
 element={
-<ProtectedRoute roleRequired="member">
+<ProtectedRoute allowedRoles={memberRoles}>
 <MemberAttendance/>
 </ProtectedRoute>
 }
@@ -114,7 +117,7 @@ element={
 <Route
 path="/member/announcements"
 element={
-<ProtectedRoute roleRequired="member">
+<ProtectedRoute allowedRoles={memberRoles}>
 <MemberAnnouncements/>
 </ProtectedRoute>
 }
@@ -123,7 +126,7 @@ element={
 <Route
 path="/member/query"
 element={
-<ProtectedRoute roleRequired="member">
+<ProtectedRoute allowedRoles={memberRoles}>
 <SendQuery/>
 </ProtectedRoute>
 }

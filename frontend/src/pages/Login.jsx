@@ -22,10 +22,13 @@ export default function Login() {
       localStorage.setItem("token",res.data.token)
       localStorage.setItem("role",res.data.user.role)
 
-      if(res.data.user.role === "admin"){
+      const userRole = res.data.user.role
+      const managementRoles = ["CAP", "V_CAP", "MANAGER", "STRATEGIST", "admin"]
+
+      if(managementRoles.includes(userRole)){
         navigate("/admin/dashboard")
       }
-      else if(res.data.user.role === "member"){
+      else {
         navigate("/member/dashboard")
       }
 

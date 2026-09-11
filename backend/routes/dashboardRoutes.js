@@ -1,7 +1,7 @@
 const router = require("express").Router()
 const controller = require("../controllers/dashboardController")
-const {verifyToken, isAdmin} = require("../middleware/authMiddleware")
+const {verifyToken, authorize} = require("../middleware/authMiddleware")
 
-router.get("/stats", verifyToken, isAdmin, controller.getStats)
+router.get("/stats", verifyToken, authorize("CAP", "V_CAP", "MANAGER", "STRATEGIST"), controller.getStats)
 
 module.exports = router

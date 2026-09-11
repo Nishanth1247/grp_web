@@ -4,6 +4,7 @@ import MemberSidebar from "../components/MemberSidebar"
 export default function MainLayout({children}){
 
 const role = localStorage.getItem("role")
+const isManagement = ["CAP", "V_CAP", "MANAGER", "STRATEGIST", "admin"].includes(role)
 
 return(
 
@@ -13,7 +14,7 @@ return(
 
 <div className="fixed left-0 top-0 h-screen w-64">
 
-{role==="admin" ? <AdminSidebar/> : <MemberSidebar/>}
+{isManagement ? <AdminSidebar/> : <MemberSidebar/>}
 
 </div>
 

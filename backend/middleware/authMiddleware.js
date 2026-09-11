@@ -23,9 +23,19 @@ next()
 
 }
 
-exports.isAdmin = (req,res,next)=>{
-    if(req.user.role !== "admin"){
-        return res.status(403).json({message:"Admin access required"})
+exports.authorize = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Access denied: insufficient permissions" });
     }
-    next()
-}
+    next();
+  };
+};
+
+exports.isAdmin = (req, res, next) => {
+  const adminRoles = ["CAP", "V_CAP", "MANAGER", "STRATEGIST", "admin"];
+  if (!req.user || !adminRoles.includes(req.user.role)) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+  next();
+};
