@@ -1,9 +1,14 @@
-import {BrowserRouter,Routes,Route} from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 import Login from "./pages/Login"
 import ProtectedRoute from "./components/ProtectedRoute"
 
-import AdminDashboard from "./pages/admin/AdminDashboard"
+import CAPDashboard from "./pages/cap/CAPDashboard"
+import VCAPDashboard from "./pages/vcap/VCAPDashboard"
+import ManagerDashboard from "./pages/manager/ManagerDashboard"
+import StrategistDashboard from "./pages/strategist/StrategistDashboard"
+import MemberDashboard from "./pages/member/MemberDashboard"
+
 import Projects from "./pages/admin/Projects"
 import Team from "./pages/admin/Team"
 import Queries from "./pages/admin/Queries"
@@ -13,131 +18,161 @@ import AdminAttendance from "./pages/admin/Attendance"
 import MemberAnnouncements from "./pages/member/Announcements"
 import MemberAttendance from "./pages/member/Attendance"
 import MyProjects from "./pages/member/MyProjects"
-import MemberDashboard from "./pages/member/MemberDashboard"
 import SendQuery from "./pages/member/SendQuery"
 
-const managementRoles = ["CAP", "V_CAP", "MANAGER", "STRATEGIST", "admin"];
-const memberRoles = ["MEMBER", "member", "CAP", "V_CAP", "MANAGER", "STRATEGIST"];
+function App() {
+  const managementRoles = ["CAP", "V_CAP", "MANAGER", "STRATEGIST"]
+  const allRoles = ["CAP", "V_CAP", "MANAGER", "STRATEGIST", "MEMBER"]
 
-function App(){
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
 
-return(
+        {/* ROLE SPECIFIC DASHBOARDS */}
+        <Route
+          path="/cap/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["CAP"]}>
+              <CAPDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-<BrowserRouter>
+        <Route
+          path="/vcap/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["V_CAP"]}>
+              <VCAPDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-<Routes>
+        <Route
+          path="/manager/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["MANAGER"]}>
+              <ManagerDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-<Route path="/" element={<Login/>}/>
+        <Route
+          path="/strategist/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["STRATEGIST"]}>
+              <StrategistDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-{/* ADMIN / MANAGEMENT ROUTES */}
+        <Route
+          path="/member/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["MEMBER"]}>
+              <MemberDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/admin/dashboard"
-element={
-<ProtectedRoute allowedRoles={managementRoles}>
-<AdminDashboard/>
-</ProtectedRoute>
-}
-/>
+        {/* BACKWARD COMPATIBLE /ADMIN/DASHBOARD REDIRECT */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={managementRoles}>
+              <Navigate to="/cap/dashboard" replace />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/admin/projects"
-element={
-<ProtectedRoute allowedRoles={managementRoles}>
-<Projects/>
-</ProtectedRoute>
-}
-/>
+        {/* MANAGEMENT SUB-PAGES */}
+        <Route
+          path="/admin/projects"
+          element={
+            <ProtectedRoute allowedRoles={["CAP", "V_CAP", "MANAGER", "STRATEGIST"]}>
+              <Projects />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/admin/team"
-element={
-<ProtectedRoute allowedRoles={managementRoles}>
-<Team/>
-</ProtectedRoute>
-}
-/>
+        <Route
+          path="/admin/team"
+          element={
+            <ProtectedRoute allowedRoles={["CAP", "V_CAP", "MANAGER", "STRATEGIST"]}>
+              <Team />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/admin/queries"
-element={
-<ProtectedRoute allowedRoles={managementRoles}>
-<Queries/>
-</ProtectedRoute>
-}
-/>
+        <Route
+          path="/admin/queries"
+          element={
+            <ProtectedRoute allowedRoles={["CAP", "V_CAP", "MANAGER"]}>
+              <Queries />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/admin/announcements"
-element={
-<ProtectedRoute allowedRoles={managementRoles}>
-<AdminAnnouncements/>
-</ProtectedRoute>
-}
-/>
+        <Route
+          path="/admin/announcements"
+          element={
+            <ProtectedRoute allowedRoles={["CAP", "V_CAP", "STRATEGIST"]}>
+              <AdminAnnouncements />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/admin/attendance"
-element={
-<ProtectedRoute allowedRoles={managementRoles}>
-<AdminAttendance/>
-</ProtectedRoute>
-}
-/>
+        <Route
+          path="/admin/attendance"
+          element={
+            <ProtectedRoute allowedRoles={["CAP", "V_CAP", "MANAGER", "STRATEGIST"]}>
+              <AdminAttendance />
+            </ProtectedRoute>
+          }
+        />
 
-{/* MEMBER ROUTES */}
+        {/* MEMBER SUB-PAGES */}
+        <Route
+          path="/member/projects"
+          element={
+            <ProtectedRoute allowedRoles={allRoles}>
+              <MyProjects />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/member/dashboard"
-element={
-<ProtectedRoute allowedRoles={memberRoles}>
-<MemberDashboard/>
-</ProtectedRoute>
-}
-/>
+        <Route
+          path="/member/attendance"
+          element={
+            <ProtectedRoute allowedRoles={allRoles}>
+              <MemberAttendance />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/member/projects"
-element={
-<ProtectedRoute allowedRoles={memberRoles}>
-<MyProjects/>
-</ProtectedRoute>
-}
-/>
+        <Route
+          path="/member/announcements"
+          element={
+            <ProtectedRoute allowedRoles={allRoles}>
+              <MemberAnnouncements />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/member/attendance"
-element={
-<ProtectedRoute allowedRoles={memberRoles}>
-<MemberAttendance/>
-</ProtectedRoute>
-}
-/>
+        <Route
+          path="/member/query"
+          element={
+            <ProtectedRoute allowedRoles={allRoles}>
+              <SendQuery />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-path="/member/announcements"
-element={
-<ProtectedRoute allowedRoles={memberRoles}>
-<MemberAnnouncements/>
-</ProtectedRoute>
-}
-/>
-
-<Route
-path="/member/query"
-element={
-<ProtectedRoute allowedRoles={memberRoles}>
-<SendQuery/>
-</ProtectedRoute>
-}
-/>
-
-</Routes>
-
-</BrowserRouter>
-
-)
-
+        {/* FALLBACK REDIRECT */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App

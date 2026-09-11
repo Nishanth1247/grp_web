@@ -1,55 +1,56 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import API from "../services/api"
 import { useNavigate } from "react-router-dom"
 
 export default function Login() {
-
-  const [email,setEmail] = useState("")
-  const [password,setPassword] = useState("")
-  const [error,setError] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
 
   const navigate = useNavigate()
 
-  const login = async()=>{
+  const getDashboardForRole = (role) => {
+    switch (role) {
+      case "CAP": return "/cap/dashboard"
+      case "V_CAP": return "/vcap/dashboard"
+      case "MANAGER": return "/manager/dashboard"
+      case "STRATEGIST": return "/strategist/dashboard"
+      case "MEMBER": return "/member/dashboard"
+      default: return "/member/dashboard"
+    }
+  }
 
-    try{
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    const role = localStorage.getItem("role")
+    if (token && role) {
+      navigate(getDashboardForRole(role), { replace: true })
+    }
+  }, [navigate])
 
-      const res = await API.post("/auth/login",{
+  const login = async () => {
+    try {
+      const res = await API.post("/auth/login", {
         email,
         password
       })
 
-      localStorage.setItem("token",res.data.token)
-      localStorage.setItem("role",res.data.user.role)
+      localStorage.setItem("token", res.data.token)
+      localStorage.setItem("role", res.data.user.role)
 
-      const userRole = res.data.user.role
-      const managementRoles = ["CAP", "V_CAP", "MANAGER", "STRATEGIST", "admin"]
-
-      if(managementRoles.includes(userRole)){
-        navigate("/admin/dashboard")
-      }
-      else {
-        navigate("/member/dashboard")
-      }
-
-    }catch(err){
-
-      if(err.response){
+      navigate(getDashboardForRole(res.data.user.role))
+    } catch (err) {
+      if (err.response) {
         setError(err.response.data.message || "Not a valid user")
-      }else{
+      } else {
         setError("Server error")
       }
-
     }
-
   }
 
-  return(
-
+  return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600">
-
       <div className="bg-white p-8 rounded-2xl shadow-2xl w-96">
-
         <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">
           Welcome Back
         </h2>
@@ -61,14 +62,14 @@ export default function Login() {
         <input
           className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           placeholder="Email address"
-          onChange={(e)=>setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           placeholder="Password"
-          onChange={(e)=>setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
@@ -83,11 +84,7 @@ export default function Login() {
             {error}
           </p>
         )}
-
       </div>
-
     </div>
-
   )
-
 }
