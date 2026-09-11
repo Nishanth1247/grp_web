@@ -1,18 +1,30 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import MainLayout from "../../layouts/MainLayout"
+import API from "../../services/api"
 
 export default function Attendance(){
 
-const [month,setMonth] = useState("March")
+const currentMonthName = new Date().toLocaleString("default",{month:"long"})
+const [month,setMonth] = useState(currentMonthName)
+const [attendance,setAttendance] = useState([])
+const [loading,setLoading] = useState(true)
 
-const attendance = [
-{date:"2026-03-01",status:"Present"},
-{date:"2026-03-02",status:"Absent"},
-{date:"2026-03-03",status:"Present"},
-{date:"2026-03-04",status:"Present"},
-{date:"2026-03-05",status:"Absent"},
-{date:"2026-03-06",status:"Present"},
-]
+useEffect(()=>{
+loadAttendance()
+},[])
+
+const loadAttendance = async()=>{
+try{
+const res = await API.get("/attendance/my")
+if(Array.isArray(res.data)){
+setAttendance(res.data)
+}
+}catch(err){
+console.log("Error loading attendance:",err)
+}finally{
+setLoading(false)
+}
+}
 
 const filtered = attendance.filter(a =>
 new Date(a.date).toLocaleString("default",{month:"long"}) === month

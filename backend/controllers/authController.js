@@ -29,7 +29,7 @@ return res.status(401).json({message:"Wrong password"})
 
 const token = jwt.sign(
 {id:user.id,role:user.role},
-"secretkey",
+process.env.JWT_SECRET || "secretkey",
 {expiresIn:"1d"}
 )
 
@@ -40,8 +40,7 @@ id:user.id,
 role:user.role
 }
 })
-console.log(password)
-console.log(user.password)
+
 
 })
 }

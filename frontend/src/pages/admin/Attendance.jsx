@@ -18,7 +18,7 @@ const res = await API.get("/attendance/members")
 const formatted = res.data.map(m=>({
 id:m.id,
 name:m.name,
-status:"Absent"
+status:m.status || "Absent"
 }))
 
 setAttendance(formatted)

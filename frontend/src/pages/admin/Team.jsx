@@ -64,7 +64,7 @@ className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition"
 </h2>
 
 <p className="text-gray-700 mb-4">
-<span className="font-semibold">Team Lead:</span> {team.leader}
+<span className="font-semibold">Team Lead:</span> {team.lead || team.leader}
 </p>
 
 <div className="space-y-2">

@@ -92,6 +92,12 @@ className={`px-3 py-1 rounded-full text-sm font-semibold ${statusStyle(p.status)
 {p.description}
 </p>
 
+{p.assigned_user_name && (
+<p className="text-sm text-indigo-600 font-medium mb-3">
+Assigned to: {p.assigned_user_name}
+</p>
+)}
+
 {/* Skills */}
 
 <div className="flex flex-wrap gap-2">

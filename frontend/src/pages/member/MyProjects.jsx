@@ -16,7 +16,7 @@ const loadProjects = async ()=>{
 
 try{
 
-const res = await API.get("/member/projects")
+const res = await API.get("/projects/my")
 
 // ensure response is array
 if(Array.isArray(res.data)){

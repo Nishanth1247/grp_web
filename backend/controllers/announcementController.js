@@ -45,3 +45,23 @@ exports.getAnnouncements = (req, res) => {
   );
 
 };
+
+exports.deleteAnnouncement = (req, res) => {
+  const { id } = req.params;
+
+  db.query(
+    "DELETE FROM announcements WHERE id=?",
+    [id],
+    (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: "Failed to delete announcement" });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Announcement not found" });
+      }
+
+      res.status(200).json({ message: "Announcement deleted successfully" });
+    }
+  );
+};
