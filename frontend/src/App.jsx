@@ -19,6 +19,7 @@ import MemberAnnouncements from "./pages/member/Announcements"
 import MemberAttendance from "./pages/member/Attendance"
 import MyProjects from "./pages/member/MyProjects"
 import SendQuery from "./pages/member/SendQuery"
+import UserManagement from "./pages/users/UserManagement"
 
 function App() {
   const managementRoles = ["CAP", "V_CAP", "MANAGER", "STRATEGIST"]
@@ -127,6 +128,15 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["CAP", "V_CAP", "MANAGER", "STRATEGIST"]}>
               <AdminAttendance />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/users"
+          element={
+            <ProtectedRoute allowedRoles={["CAP", "V_CAP", "MANAGER", "STRATEGIST"]}>
+              <UserManagement />
             </ProtectedRoute>
           }
         />

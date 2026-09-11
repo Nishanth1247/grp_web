@@ -10,6 +10,7 @@ const projectRoutes = require("./routes/projectRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const memberRoutes = require("./routes/memberRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/member", memberRoutes);
+app.use("/api/users", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 

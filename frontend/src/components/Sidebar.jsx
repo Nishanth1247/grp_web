@@ -88,6 +88,10 @@ export default function Sidebar() {
                 <FiMessageSquare size={18} />
                 Queries
               </Link>
+              <Link className={linkStyle("/users")} to="/users">
+                <FiUsers size={18} />
+                Users
+              </Link>
             </>
           )}
 
@@ -109,6 +113,10 @@ export default function Sidebar() {
               <Link className={linkStyle("/admin/queries")} to="/admin/queries">
                 <FiMessageSquare size={18} />
                 Queries
+              </Link>
+              <Link className={linkStyle("/users")} to="/users">
+                <FiUsers size={18} />
+                Users
               </Link>
             </>
           )}
